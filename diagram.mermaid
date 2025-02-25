@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Client
+    participant LocalStorage
+    participant Server
+    participant Database
+    participant Segment
+
+    Note over Client,LocalStorage: A.js generates anonymousId
+    Client->>LocalStorage: Store anonymousId
+    Client->>Server: Send anonymousId
+    Server->>Database: Store anonymousId
+    
+    Note over Server,Database: Generate userId
+    Server->>Database: Store userId with anonymousId
+    Server->>Client: Return userId
+    Client->>LocalStorage: Store userId
+    
+    rect rgb(200, 200, 255)
+        Note over Client,Segment: Client-side tracking
+        Client->>Segment: Track event (with both IDs)
+    end
+    
+    rect rgb(200, 255, 200)
+        Note over Server,Segment: Server-side tracking
+        Server->>Database: Lookup IDs
+        Server->>Segment: Track event (with both IDs)
+    end

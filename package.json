@@ -1,0 +1,27 @@
+{
+  "name": "client-server-implementation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@segment/analytics-node": "^2.2.1",
+    "abab": "^2.0.6",
+    "bootstrap-icons": "^1.11.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "dotenv-flow": "^4.1.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "jquery": "^3.7.1",
+    "path": "^0.12.7",
+    "uuid": "^11.0.5"
+  },
+  "type": "module"
+}

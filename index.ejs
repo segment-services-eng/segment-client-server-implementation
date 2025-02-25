@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Server Data Exchange</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.x.x/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./styles.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+    <script src="./script.js"></script>
+
+    <script>
+        let SNIPPET_VERSION = "5.2.0";
+        !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="<%= SEGMENTAJSWRITEKEY %>";analytics.SNIPPET_VERSION="5.2.0";
+        analytics.load("<%= SEGMENTAJSWRITEKEY %>");
+        analytics.page();
+        }}();
+
+        let userId = '' 
+        let anonymousId = ''
+        let userTraits = {}
+        let groupTraits = {}
+
+        analytics.ready(() => {
+            userId = analytics.user().id()
+            document.getElementById('userId').innerText = `userId : ${userId}`
+            
+            anonymousId = analytics.user().anonymousId()
+            document.getElementById('anonymousId').innerText = `anonymousId : ${anonymousId}`
+            
+            userTraits = analytics.user().traits()
+            document.getElementById('userTraits').innerText = `traits : ${JSON.stringify(userTraits)}`
+        })
+
+
+      </script>
+      
+      
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>Client-Server Data Exchange</h1>
+                <div class="header-columns">
+                    <div class="header-column-left">
+                        <div class="instructions">
+                            <p>1. Click the Generate User Data button to create user traits and a userId.</p>
+                            <p>2. Click any button under Client Side Events to have that event triggered on the client and sent to your Segment Analytics.js Source</p>
+                            <p>3. Click any button under Server Side Events to have that event triggered on the server and sent to your Segment Server Source.</p>
+                            <p>4. Review the event requests under Client Side / Server Side Segment Requests, click on them to reveal the payload.</p>
+                            <p>5. You can also manually complete the User Form with customized data. The Submit button triggers an Identify event and a Track event 'Form Submitted' with the form's data.</p>
+                            <p>To act as an admin user and impersonate a user, toggle the Admin Mode button.</p>
+                        </div>
+                    </div>
+                    <div class="header-column-right">
+                        <div id="api-keys" class="card">
+                            <p>AJS writeKey: <%= SEGMENTAJSWRITEKEY %></p>
+                            <p>SERVER writeKey: <%= SEGMENTNODEWRITEKEY %></p>
+                        </div>
+                        <div id="admin-toggle" class="card">
+                            <div class="admin-toggle-container">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="admin-input" onchange="handleAdminToggle(event)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span id="admin-label">Admin Mode</span>
+                            </div>
+                            <div id="admin-user-info" class="hidden">
+                                <p>
+                                    <b>Admin UserId: </b> <span id="admin-userId-span"></span> 
+                                </p>
+                                <p>
+                                    <b> Admin Email: </b> <span id="admin-email-span"></span> 
+                                </p>
+                                <p>
+                                    <b> Admin Name: </b> <span id="admin-firstName-span"></span> <span id="admin-lastName-span"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Right side with Random User Data -->
+            <div class="header-right">
+                <h2 class="card-title">Random User Data</h2>
+                <ul id="user-list">
+                    <li>First Name: <span id="firstName-span" class="copyable"></span></li>
+                    <li>Last Name: <span id="lastName-span" class="copyable"></span></li>
+                    <li>Username: <span id="username-span" class="copyable"></span></li>
+                    <li>Email: <span id="email-span" class="copyable"></span></li>
+                    <li>Phone: <span id="phone-span" class="copyable"></span></li>
+                    <li>Street: <span id="street-span" class="copyable"></span></li>
+                    <li>City: <span id="city-span" class="copyable"></span></li>
+                    <li>State: <span id="state-span" class="copyable"></span></li>
+                    <li>Zipcode: <span id="zipcode-span" class="copyable"></span></li>
+                </ul>
+                <div class="user-data-actions">
+                    <button class="btn btn-outline-warning" onclick="getUserData()">Generate User Data</button>
+                    <!-- <button class="btn btn-outline-danger cookie-reset" onclick="cookieReset()">Reset User</button> -->
+                    <button class="btn btn-outline-danger cookie-reset" onclick="handleResetUser()">Reset User</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="full-width-container">
+        <!-- Main Grid Layout -->
+        <div class="grid-layout">
+            <!-- Client Side Events Card -->
+            <div id="client-side-events" class="card client-side-events">
+                <h2 class="card-title">Client Side Events</h2>
+                
+                <!-- Event Triggers -->
+                <div class="event-buttons">
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('page', 'client')">Page</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('identify', 'client')">Identify</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('track', 'client',{button: 'Client Side Track', event:'Button Clicked'})">Track</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('group', 'client')">Group</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('alias', 'client')">Alias</button>
+                </div>
+
+                <!-- Client Side Requests -->
+                <div class="segment-requests">
+                    <h3>CLIENT SIDE SEGMENT REQUESTS</h3>
+                    <div id="client-segment-responses"></div>
+                </div>
+            </div>
+
+
+            <!-- LocalStorage & Cookies -->
+            <div class="card">
+                <h2 class="card-title">LocalStorage & Cookies</h2>
+                <div>
+                    <!-- <button class="btn btn-outline-secondary" onclick="cookieClick('userId',userId)">Get userId</button> -->
+                    <div class="cookie-value copyable" id="userId">userId: Not set</div>
+                    
+                    <!-- <button class="btn btn-outline-secondary" onclick="cookieClick('anonymousId',anonymousId)">Get anonymousId</button> -->
+                    <div class="cookie-value copyable" id="anonymousId">anonymousId: Not set</div>
+                    
+                    <!-- <button class="btn btn-outline-secondary" onclick="cookieClick('userTraits',userTraits)">Get user traits</button> -->
+                    <div class="cookie-value copyable" id="userTraits">traits: Not set</div>
+                </div>
+            </div>
+
+            <!-- Server Side Events -->
+            <div class="card server-side-events">
+                <h2 class="card-title">Server Side Events</h2>
+                <div class="event-buttons">
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('page', 'server')">Page</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('identify', 'server')">Identify</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('track', 'server',{button: 'Client Side Track', event:'Button Clicked'})">Track</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('group', 'server')">Group</button>
+                    <button class="btn  btn-outline-info" onclick="triggerEvent('alias', 'server')">Alias</button>
+                </div>
+                <!-- Server Side Requests -->
+                <div class="segment-requests">
+                    <h3>SERVER SIDE SEGMENT REQUESTS</h3>
+                    <div id="server-segment-responses"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bottom-row">
+        <!-- Form Card -->
+        <div class="card">
+            <h2 class="card-title">User Form</h2>
+            <form class="user-form" id="userForm">
+                <div class="form-columns">
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="formFirstName">First Name</label>
+                            <input type="text" id="formFirstName" class="form-control copyable" placeholder="Enter first name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formUsername">Username</label>
+                            <input type="text" id="formUsername" class="form-control copyable" placeholder="Enter username">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formPhone">Phone</label>
+                            <input type="tel" id="formPhone" class="form-control copyable" placeholder="Enter phone number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formCity">City</label>
+                            <input type="text" id="formCity" class="form-control copyable" placeholder="Enter city">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formZipcode">Zipcode</label>
+                            <input type="text" id="formZipcode" class="form-control copyable" placeholder="Enter zipcode">
+                        </div>
+                    </div>
+            
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="formLastName">Last Name</label>
+                            <input type="text" id="formLastName" class="form-control copyable" placeholder="Enter last name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formEmail">Email</label>
+                            <input type="email" id="formEmail" class="form-control copyable" placeholder="Enter email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formStreet">Street</label>
+                            <input type="text" id="formStreet" class="form-control copyable" placeholder="Enter street address">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="formState">State</label>
+                            <input type="text" id="formState" class="form-control copyable" placeholder="Enter state">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-outline-secondary" onclick="handleFormClear(event)">Clear</button>
+                    <!-- Submit sends data client-side only -->
+                    <!-- <button type="submit" class="btn btn-outline-primary" onclick="handleFormSubmit(event)">Submit</button> -->
+                    <button type="submit" class="btn btn-outline-primary" onclick="handleFormSubmit(event, 'client')">Submit Client-Side</button>
+                    <button type="submit" class="btn btn-outline-primary" onclick="handleFormSubmit(event, 'server')">Submit Server-Side</button>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Code Editor Card -->
+        <div class="card code-editor-container">
+            <div class="editor-header">
+                <div class="format-tabs">
+                    <button class="editor-tab active" data-format="js">JS</button>
+                    <button class="editor-tab" data-format="json">JSON</button>
+                </div>
+                <div class="event-tabs">
+                    <button class="editor-tab active" data-event="track">Track</button>
+                    <button class="editor-tab" data-event="identify">Identify</button>
+                    <button class="editor-tab" data-event="page">Page</button>
+                    <button class="editor-tab" data-event="group">Group</button>
+                    <button class="editor-tab" data-event="alias">Alias</button>
+                </div>
+            </div>
+            
+            <div class="code-editor-content">
+                <textarea class="code-editor-textarea copyable" id="codeEditor" spellcheck="false"></textarea>
+            </div>
+            
+            <div class="editor-footer">
+                <button class="editor-btn client" onclick="handleEditorSend('client')">Send Client-Side</button>
+                <button class="editor-btn server" onclick="handleEditorSend('server')">Send Server-Side</button>
+            </div>
+        </div>
+        <!-- <div class="card">
+            <h2 class="card-title">Code Editor</h2>
+            <div class="code-editor">
+            </div>
+        </div> -->
+    </div>
+    <footer></footer>
+
+</body>
+    
+</html>
