@@ -821,8 +821,10 @@ const triggerEvent = async (eventType, sourceType, data) => {
     }
 
     // Get the current user data displayed in UI
+    let userIdValue = document.getElementById('userId').innerText.split(': ')[1] || '';
+if (userIdValue === "null") userIdValue = null;
     const currentUIData = {
-        userId: document.getElementById('userId').innerText.split(': ')[1] || '',
+        userId: userIdValue,
         anonymousId: document.getElementById('anonymousId').innerText.split(': ')[1] || '',
         traits: {
             firstName: document.getElementById('firstName-span').innerText || '',
