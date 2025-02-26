@@ -21,10 +21,25 @@ With version 2, coming soon, additional methods will be added to include the fun
 
 Before running the script, ensure you have the following:
 - Node.js installed on your machine.
+  - Check if Node.js & NPM are currently installed
+    - >```node -v```  
+    - >```npm -v``` 
+  - Install NPM for the first time
+    - >```npm install -g npm```
+  - Update NPM to the latest version
+    - >```npm install -g npm@latest```
+  - Install Node.js for the first time with Homebrew
+    - >```brew install node```
+
 - A Segment Analytics.js source write key.
+  - [See your existing Javacript Sources in your Segment workspace](https://app.segment.com/goto-my-workspace/sources?search=javascript)
+  - [Create a new Javascript Source in your Segment workspace](https://app.segment.com/goto-my-workspace/sources/catalog/javascript)
+
 - A Segment Server source write key.
+  - [See your existing Node Sources in your Segment workspace](https://app.segment.com/goto-my-workspace/sources?search=node)
+  - [Create a new Server Source in your Segment workspace](https://app.segment.com/goto-my-workspace/catalog?category=Server)
+
 - An existing GitHub repository (if you want to version-control your script).
-- Access and store campaign data into a cookie to dynamically include in all events.
 
 ## Setup
 
@@ -79,7 +94,7 @@ SEGMENTAJSWRITEKEY='yourSegmentAnalyticsJSSourceWriteKey'
 SEGMENTNODEWRITEKEY='yourSegmentServerSourceWriteKey'
 ```
 
-These writeKeys will be visible in the browser. If you do not want this behavior, then remove the two <p> tags from the index.ejs file, but do not remove the <div> tags.
+These writeKeys will be visible in the browser. If you do not want this behavior, then remove the two  p  tags from the index.ejs file, but do not remove the  div  tags.
 ```
 <div class="api-keys">
       <p>AJS writeKey: <%= SEGMENTAJSWRITEKEY %></p>
