@@ -22,14 +22,24 @@ With version 2, coming soon, additional methods will be added to include the fun
 Before running the script, ensure you have the following:
 - Node.js installed on your machine.
   - Check if Node.js & NPM are currently installed
-    - >```node -v```  
-    - >```npm -v``` 
+    ```
+    node -v
+    ```  
+    ```
+    npm -v
+    ``` 
   - Install NPM for the first time
-    - >```npm install -g npm```
+    ```
+    npm install -g npm
+    ```
   - Update NPM to the latest version
-    - >```npm install -g npm@latest```
+    ```
+    npm install -g npm@latest
+    ```
   - Install Node.js for the first time with Homebrew
-    - >```brew install node```
+    ```
+    brew install node
+    ```
 
 - A Segment Analytics.js source write key.
   - [See your existing Javacript Sources in your Segment workspace](https://app.segment.com/goto-my-workspace/sources?search=javascript)
@@ -68,7 +78,7 @@ npm install
 touch .env
 ```
 
-### 4. Add Segment Write Keys to .env
+### 4. Add Segment Write Keys to .env File
 
 #### Analytics.js Client-side Source : 
 1. Create/Locate a Javascript source in Segment.
@@ -120,6 +130,8 @@ These writeKeys will be visible in the browser. If you do not want this behavior
 ## BEGIN SENDING DATA TO YOUR SEGMENT SOURCES
 1. Once the .env file has both source's writeKeys saved, ```cd segment-client-server-implementation``` and start your server.
 2. Start your server with this command : 
-      >node server.mjs
+      ```
+      node server.mjs
+      ```
 3. Open the your local browser to localhost:4100
 4. Follow the instructions at the top-left of the page to begin sending events.
