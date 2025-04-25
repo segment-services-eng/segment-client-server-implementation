@@ -294,6 +294,11 @@ function updateAdminUI(isAdminMode) {
         document.getElementById('admin-firstName-span').innerText = `${currentAdminUser.firstName}`;
         document.getElementById('admin-lastName-span').innerText = `${currentAdminUser.lastName}`;
 
+        // Remove anonymousId from server events
+        document.getElementById('anonymousId').innerText = 'anonymousId : ';
+        anonymousId = ''
+        analytics.user().anonymousId('')
+
         // Update instructions
         instructionsElement.innerHTML = `
             <p><strong>ADMIN MODE ACTIVE</strong></p>
@@ -325,6 +330,10 @@ function updateAdminUI(isAdminMode) {
         document.getElementById('admin-email-span').innerText = '';
         document.getElementById('admin-firstName-span').innerText = '';
         document.getElementById('admin-lastName-span').innerText = '';
+
+        // Remove anonymousId from server events
+        let anonymousId = analytics.user().anonymousId()
+        document.getElementById('anonymousId').innerText = `anonymousId : ${anonymousId}`;
 
         // Restore original instructions
         instructionsElement.innerHTML = `
